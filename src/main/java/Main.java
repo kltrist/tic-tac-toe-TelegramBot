@@ -22,7 +22,7 @@ public class Main {
 
         GameManager consoleManager = new GameManager(new ConsoleRender(), dbHelper, new ConsoleReader(), cfg, gameSaver);
         consoleManager.startGame();
-
+//wq
     }
 
 
