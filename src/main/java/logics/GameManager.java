@@ -3,20 +3,15 @@ package logics;
 import board.Board;
 import config.AppConfiguration;
 import db.DataBaseHelper;
-
 import gui.cmd.Command;
 import gui.render.RenderService;
 import player.AIPlayer;
-import player.HumanPlayer;
 import player.AbstractPlayer;
+import player.HumanPlayer;
 import player.PlayerType;
 import reader.Reader;
 import save.GameSaver;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.SQLException;
 
 public class GameManager {
@@ -25,14 +20,13 @@ public class GameManager {
     private DataBaseHelper dbHelper;
     private Reader rdr;
     private AppConfiguration cfg;
-    private GameSaver gameSaver;
+
 
     public GameManager(RenderService rnd, DataBaseHelper dbHelper, Reader rdr, AppConfiguration cfg, GameSaver gameSaver) {
         this.rnd = rnd;
         this.dbHelper = dbHelper;
         this.rdr = rdr;
         this.cfg = cfg;
-        this.gameSaver = gameSaver;
     }
 
     public void startGame() throws SQLException {
@@ -53,31 +47,22 @@ public class GameManager {
                     rnd.renderMessage("Bye!");
                     break;
                 case Command.SAVE:
-                    rnd.renderMessage("You can save the game state during playing!");
+                    rnd.renderMessage("You can save the game state only during playing!");
                     break;
                 case Command.RESTORE:
-                    restoreSaveFromFile(cfg.GAME_STATE_FILEPATH);
                     break;
                 default:
-                    rnd.renderMessage("Incorrect input!");
+                    rnd.renderMessage("Incorrect move!");
             }
         }
     }
 
     private Game playing(AbstractPlayer firstPlr, AbstractPlayer secondPlr) throws SQLException {
         Board board = new Board();
-        Game game = new Game(firstPlr, secondPlr, rnd, board, gameSaver);
+        Game game = new Game(firstPlr, secondPlr, rnd, board);
         AbstractPlayer winner = game.play(true);
 
-        supplementToDb(winner);
-        printWinner(winner);
-
-        return game;
-    }
-
-    private Game playing(Game game) throws SQLException {
-        AbstractPlayer winner = game.play(true);
-        supplementToDb(winner);
+        addToDb(winner);
         printWinner(winner);
 
         return game;
@@ -101,7 +86,7 @@ public class GameManager {
         return rdr.readLine();
     }
 
-    private void supplementToDb(AbstractPlayer winner) throws SQLException {
+    private void addToDb(AbstractPlayer winner) throws SQLException {
         if (winner != null) {
             String winnerName = winner.getName();
             if (dbHelper.isPlayerExists(winnerName))
@@ -111,10 +96,5 @@ public class GameManager {
         }
     }
 
-    private void restoreSaveFromFile(String filepath) throws SQLException {
-        if (Files.exists(Path.of(filepath))) {
-            Game game = gameSaver.restore();
-            playing(game);
-        } else rnd.renderException(new FileNotFoundException());
-    }
+
 }

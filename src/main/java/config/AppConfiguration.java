@@ -9,7 +9,8 @@ public class AppConfiguration implements Serializable {
     public transient static String USER = "root";
     public char FIRST_SYMBOL = 'x';
     public char SECOND_SYMBOL = 'o';
-    public String GAME_STATE_FILEPATH = "C:\\Users\\overd\\Desktop\\tictactoe - demo\\src\\main\\resources\\gameState.json";
+    public String CONSOLE_GAME_STATE_FILEPATH = "C:\\Users\\overd\\Desktop\\tictactoe - demo\\src\\main\\resources\\gameState.json";
+    public String BOT_GAME_STATE_FILEPATH = "C:\\Users\\overd\\Desktop\\tictactoe - demo\\src\\main\\resources\\botGameState.json";
 
     public static AppConfiguration getConfiguration(String filepath) {
         File cfgFile = new File(filepath);

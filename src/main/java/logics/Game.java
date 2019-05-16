@@ -1,11 +1,10 @@
 package logics;
 
-import gui.cmd.Command;
 import gui.render.RenderService;
 import board.Board;
 import player.AbstractPlayer;
-import save.GameSaver;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 
@@ -15,36 +14,19 @@ public class Game implements Serializable {
     private AbstractPlayer secondPl;
     private RenderService rn;
     private Board board;
-    private GameSaver gameSaver;
     private boolean isInterrupted;
 
-    Game(AbstractPlayer firstPl, AbstractPlayer secondPl, RenderService rn, Board board, GameSaver gameSaver) {
+    Game(AbstractPlayer firstPl, AbstractPlayer secondPl, RenderService rn, Board board) {
         if (firstPl.getSymbol() == secondPl.getSymbol())
             throw new IllegalArgumentException("You cannot set the same symbols!");
         this.firstPl = firstPl;
         this.secondPl = secondPl;
         this.board = board;
         this.rn = rn;
-        this.gameSaver = gameSaver;
     }
 
-    private boolean makeMove(String input, char symbol) {
-        boolean isMove = true;
-        if (input.equals(Command.SAVE)) {
-            isInterrupted = true;
-            gameSaver.save(this);
-        } else if (input.equals(Command.EXIT)) {
-            isInterrupted = true;
-        } else {
-            try {
-                int moveIndex = Integer.parseInt(input) - 1;
-                isMove = board.setCell(symbol, moveIndex);
-            } catch (NumberFormatException e) {
-                rn.renderMessage("Incorrect input!");
-                isMove = false;
-            }
-        }
-        return isMove;
+    private boolean makeMove(int moveIndex, char symbol) {
+        return board.setCell(symbol, moveIndex);
     }
 
     private boolean isAvailable() {
@@ -74,7 +56,7 @@ public class Game implements Serializable {
         while (isAvailable() && !isInterrupted) {
             rn.renderBoard(board);
             AbstractPlayer plr = moveSwitcher == 0 ? firstPl : secondPl;
-            while (!makeMove(plr.input(), plr.getSymbol())) ;
+            makeMove(plr.move(), plr.getSymbol());
             if (isWin(plr)) {
                 winner = plr;
                 break;

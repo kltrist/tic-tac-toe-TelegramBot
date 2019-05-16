@@ -10,14 +10,14 @@ public class AIPlayer extends AbstractPlayer {
     }
 
     @Override
-    public String input() {
+    public int move() {
         int max = Board.MAX_INDEX;
         int min = Board.MIN_INDEX;
-
         max -= min;
-        int moveIndex = ((int) (Math.random() * ++max) + min);
 
-        return String.valueOf(moveIndex);
+       return  ((int) (Math.random() * ++max) + min);
+
+
     }
 
 }

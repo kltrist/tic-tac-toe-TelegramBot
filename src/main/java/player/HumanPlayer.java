@@ -4,8 +4,6 @@ package player;
 import reader.Reader;
 
 
-
-
 public class HumanPlayer extends AbstractPlayer {
 
     public HumanPlayer(String name, char value, Reader r) {
@@ -15,7 +13,15 @@ public class HumanPlayer extends AbstractPlayer {
     }
 
     @Override
-    public String input() {
-        return reader.readLine();
+    public int move() {
+        boolean isValid = false;
+        int move=0;
+        while (!isValid)
+            try {
+                move = Integer.parseInt(reader.readLine())-1;
+                isValid = true;
+            } catch (NumberFormatException ignored) {
+            }
+        return move;
     }
 }

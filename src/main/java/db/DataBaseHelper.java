@@ -2,7 +2,6 @@ package db;
 
 import config.AppConfiguration;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +39,6 @@ public class DataBaseHelper  implements Serializable{
             if (isPlayerExists(name)) {
                 updatePlayer(name, winCount);
             } else {
-
                 insert.setString(1, name);
                 insert.setInt(2, winCount);
                 insert.executeUpdate();

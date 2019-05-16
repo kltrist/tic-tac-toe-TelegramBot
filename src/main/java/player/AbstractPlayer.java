@@ -12,7 +12,7 @@ public abstract class AbstractPlayer implements Serializable {
     String name;
     char symbol;
     Reader reader;
-    public abstract String input();
+    public abstract int move();
 
 
 }
