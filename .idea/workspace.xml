@@ -68,6 +68,11 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
+  <component name="ExecutionTargetDialog">
+    <checked>
+      <node key="cad516c8-bb73-42cb-b76c-abe91a24b8c1" />
+    </checked>
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="tic-tac-toe" />
   </component>
